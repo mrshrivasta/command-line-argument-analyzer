@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Command-Line Argument Analyzer — Real Process-List CommandLine Threat Scanner{% endblock %}</title>
+
+<!-- SEO -->
+<meta name="description" content="{% block meta_description %}Command-Line Argument Analyzer is an open-source security tool that parses real process-list export CSVs (Get-CimInstance Win32_Process, Sysmon Event ID 1, Event ID 4688, tasklist /v /fo csv) and flags suspicious command-line arguments: defense-evasion flags, encoded PowerShell, embedded network indicators, and repeated scripted process spawning. Free CLI and web app by Karanam Shrivasta.{% endblock %}">
+<meta name="keywords" content="command line argument analyzer, process commandline scanner, powershell encodedcommand detector, sysmon event id 1 analyzer, event id 4688 analyzer, process list csv parser, defense evasion flag detector, downloader dropper detection, Karanam Shrivasta security tools">
+<meta name="author" content="Karanam Shrivasta">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://github.com/mrshrivasta">
+
+<!-- Open Graph / social -->
+<meta property="og:title" content="Command-Line Argument Analyzer — by Karanam Shrivasta">
+<meta property="og:description" content="Real, no-mock-data analyzer for suspicious command-line arguments in real process-list export CSVs (defense-evasion flags, encoded commands, embedded network indicators, repeated scripted spawning).">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Command-Line Argument Analyzer">
+
+<!-- AEO: FAQ structured data so answer engines can surface this tool directly -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does the Command-Line Argument Analyzer check?",
+      "acceptedAnswer": {"@type": "Answer", "text": "It parses a real process-list export CSV (ProcessId, ParentProcessId, Name, ExecutablePath, CommandLine, CreationDate, User) and flags defense-evasion flags, excessively long command lines, embedded IP addresses/URLs on non-browser processes, high escape-character density, repeated identical command lines across many processes, and rows missing captured CommandLine data — using the real CommandLine text present in the CSV, never sample data."}
+    },
+    {
+      "@type": "Question",
+      "name": "Who should use the Command-Line Argument Analyzer?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Incident responders, SOC analysts, DFIR/threat-hunting practitioners, and security students who want a quick, scriptable way to triage suspicious command-line arguments in a real process-list export they own or are authorized to analyze."}
+    },
+    {
+      "@type": "Question",
+      "name": "Is the Command-Line Argument Analyzer a replacement for a professional security audit?",
+      "acceptedAnswer": {"@type": "Answer", "text": "No. It is an educational and productivity aid only. It does not replace a certified penetration test, compliance audit, or professional forensic investigation. See the disclaimer in the README."}
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="disclaimer-banner">
+  ⚠️ <strong>SECURITY &amp; LEGAL DISCLAIMER:</strong> Use this tool <strong>ONLY</strong> on systems you own or are explicitly authorized to test.
+  Provided <strong>"AS IS", WITHOUT WARRANTY OF ANY KIND</strong>. Not a substitute for a professional security audit. The author,
+  <strong>Karanam Shrivasta</strong>, accepts <strong>NO LIABILITY</strong> for any damage, data loss, downtime, or legal consequences arising from
+  use or misuse of this software. By using this tool you accept full responsibility for your actions. See the README for the complete disclaimer.
+</div>
+
+{% if current_user.is_authenticated %}
+<nav class="navbar">
+  <div class="nav-brand">🔐 Command-Line Argument Analyzer</div>
+  <div class="nav-links">
+    <a href="{{ url_for('dashboard.index') }}">Dashboard</a>
+    <a href="{{ url_for('logs.index') }}">Logs</a>
+    <a href="{{ url_for('alerts.index') }}">Alerts</a>
+    <a href="{{ url_for('incidents.index') }}">Incidents</a>
+    <a href="{{ url_for('analytics.index') }}">Analytics</a>
+    <a href="{{ url_for('reports.index') }}">Reports</a>
+    <a href="{{ url_for('settings.index') }}">Settings</a>
+    <a href="{{ url_for('auth.logout') }}">Logout ({{ current_user.username }})</a>
+  </div>
+</nav>
+{% endif %}
+
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="watermark-footer">
+  <p>
+    Command-Line Argument Analyzer &copy; {{ 2026 }} — Developed by <strong>Karanam Shrivasta</strong>
+    &middot; <a href="{{ github_url }}" target="_blank" rel="noopener">GitHub</a>
+    &middot; <a href="{{ linkedin_url }}" target="_blank" rel="noopener">LinkedIn</a>
+  </p>
+  <p class="footer-disclaimer">For authorized security auditing and educational use only. No warranty. Use at your own risk.</p>
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>
